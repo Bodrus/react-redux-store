@@ -4,7 +4,33 @@ import { connect } from 'react-redux';
 import { booksLoaded } from '../../actions';
 
 import { withBookstoreService } from '../hoc';
+import { compose } from '../../utils';
 import './book-list.css'
+
+
+
+// const {inc, dec} = bindActionCreaters(actions, dispatch);
+// connect(mapStateToProps, actions)(Counter)
+class BookList extends Component {
+
+  componentDidMount() {
+    // 1. receive data
+    const { booksLoaded, bookstoreService } = this.props;
+    const books = bookstoreService.getBooks();
+
+    // 2. dispacth action to store
+    booksLoaded(books);
+  }
+
+  render() {
+    const { books } = this.props;
+    return (
+      <ul className="book-list">
+        {books.map(book => <li key={book.id}><BookListItem book={book} /></li>)}
+      </ul>
+    )
+  }
+}
 
 const mapStateToProps = state => {
   const props = {
@@ -13,28 +39,11 @@ const mapStateToProps = state => {
   return props;
 };
 
+const mapDispatchToProps = {
+  booksLoaded
+};
 
-//bindActionCreaters
-class BookList extends Component {
-
-  componentDidMount() {
-    // 1. receive data
-    const { dispatch, bookstoreService } = this.props;
-    const books = bookstoreService.getBooks();
-
-    // 2. dispacth action to store
-    dispatch(booksLoaded(books));
-
-  }
-
-  render() {
-    const { books } = this.props;
-    return (
-      <ul>
-        {books.map(book => <li key={book.id}><BookListItem book={book} /></li>)}
-      </ul>
-    )
-  }
-}
-
-export default withBookstoreService()(connect(mapStateToProps)(BookList));
+export default compose(
+  withBookstoreService(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(BookList);
