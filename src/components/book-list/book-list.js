@@ -5,6 +5,7 @@ import { booksLoaded } from '../../actions';
 
 import { withBookstoreService } from '../hoc';
 import { compose } from '../../utils';
+import Spiner from '../spiner';
 import './book-list.css'
 
 
@@ -14,16 +15,16 @@ import './book-list.css'
 class BookList extends Component {
 
   componentDidMount() {
-    // 1. receive data
     const { booksLoaded, bookstoreService } = this.props;
-    const books = bookstoreService.getBooks();
-
-    // 2. dispacth action to store
-    booksLoaded(books);
+    bookstoreService.getBooks()
+      .then((data) => booksLoaded(data));
   }
 
   render() {
-    const { books } = this.props;
+    const { books, loading } = this.props;
+    if (loading) {
+      return <Spiner />
+    }
     return (
       <ul className="book-list">
         {books.map(book => <li key={book.id}><BookListItem book={book} /></li>)}
@@ -35,6 +36,7 @@ class BookList extends Component {
 const mapStateToProps = state => {
   const props = {
     books: state.books,
+    loading: state.loading
   }
   return props;
 };
