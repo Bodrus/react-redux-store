@@ -26,6 +26,29 @@ const fetchBooks = (bookstoreService, dispatch) => () => {
     .catch((err) => dispatch(booksError(err)));
 };
 
+const onIncrem = (id) => {
+  console.log('onIncrem', id);
+};
+
+const onDecrem = (id) => {
+  console.log('onDecrem', id)
+};
+
+const onDelete = (id) => {
+  console.log('onDelete', id)
+};
+
+const bookAddedtoCart = (bookId) => {
+  return {
+    type: 'BOOK_ADDED_TO_CART',
+    payload: bookId
+  }
+};
+
 export {
-  fetchBooks
+  fetchBooks,
+  onDecrem,
+  onDelete,
+  onIncrem,
+  bookAddedtoCart
 };
