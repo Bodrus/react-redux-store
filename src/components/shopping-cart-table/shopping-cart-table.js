@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { onDecrem, onIncrem, onDelete } from '../../actions';
+import {
+  allBooksRemoveFromCart,
+  bookAddedtoCart,
+  bookRemoveFromCart
+} from '../../actions';
 import './shopping-cart-table.css';
 
 
@@ -66,18 +70,11 @@ const mapStateToProps = state => {
   return props;
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const { bookstoreService } = ownProps;
-  return {
-    onDelete: onDelete,
-    onDecrem: () => {
-      console.log('onDecreme');
-    },
-    onIncrem: () => {
-      console.log('onIncreme')
-    }
+const mapDispatchToProps = {
+  onDelete: allBooksRemoveFromCart,
+  onIncrem: bookAddedtoCart,
+  onDecrem: bookRemoveFromCart
 
-  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCartTable);
