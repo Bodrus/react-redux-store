@@ -30,6 +30,7 @@ class BookListContainer extends Component {
 
   render() {
     const { books, loading, error, onAddCart } = this.props;
+    console.log(loading)
 
     if (loading) {
       return <Spiner />
@@ -41,13 +42,8 @@ class BookListContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const props = {
-    books: state.books,
-    loading: state.loading,
-    error: state.error
-  }
-  return props;
+const mapStateToProps = ({ bookList: { books, loading, error } }) => {
+  return { books, loading, error };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
